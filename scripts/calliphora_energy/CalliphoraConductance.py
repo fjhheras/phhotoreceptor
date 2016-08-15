@@ -46,5 +46,5 @@ class SlowAndersonR16(Conductance.DelayedRectifier):
         return exp( self.b*(V - self.a))/2/self.tau
     def beta_m(self, V):
         return exp( -self.b*(V - self.a))/2/self.tau
-    inactivation_modes = 0
+
 
