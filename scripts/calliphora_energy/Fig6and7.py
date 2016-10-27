@@ -77,7 +77,7 @@ HH_RC = []
 
 for i,V in enumerate(Vr):
 
-    DepolarisePhotoreceptor.WithLight(HH,V)
+    DepolarisePhotoreceptor.WithLight(HH,V,verbose=2)
     C = HH.body.C
     Z = HH.body.impedance(f) #All frequencies
     Cost[i] = HH.energy_consumption()
