@@ -39,7 +39,8 @@ class CellBody(ElectricalCompartment):
             self.light_conductance.add_parent(self)
 
     def set_steady_state(self,V_rest,VZ_0 = None):
-        print("Resetting to steady state...")
+        print("Resetting to dark steady state...")
+        self.set_light_conductance(0.0)
         if self.is_there_pump:
             if VZ_0 == None:
                 self._set_steady_state_given_leak(V_rest) #No Z_0 given -> only change light leak
@@ -101,7 +102,6 @@ class CellBody(ElectricalCompartment):
         Z_0 =VZ_0[1]
         self.reset_voltage(V) #Change voltage to V in order to match impedances
         self.reset_leak_conductances()
-        self.light_conductance.g_max = 0
 
         pump_ion_current_fractions = ION_CHARGE*self.pump
         exchanger_ion_current_fractions = ION_CHARGE*self.exchanger
@@ -250,7 +250,4 @@ class FlyPhotoreceptor :
     def energy_consumption(self):
         return - self.body.I_pump* 1e-6 * 6.241e18 # uA -> A -> ATP/s
 
-    def resistance_rest(self) :
-        """Calculates true resistance of the photoreceptor at the current voltage"""
-        V = self.body.V_m
-        return 1 / (self.body.total_channel_conductance(V) + self.body.leak_conductance()) #kOhms
+
