@@ -4,7 +4,6 @@ from pylab import *
 from numpy import *
 import FlyFactory
 from phhotoreceptor.DepolarisePhotoreceptor import DepolarisePhotoreceptor
-import phhotoreceptor.Experiment as Experiment
 from GBWPutils import GBWP, Gain_Bandwidth
 
 option_debugging = False
@@ -25,12 +24,12 @@ def calculate_bandwidth_of_passive_photoreceptor(photoreceptor,low_limit_frequen
 f_low = 0 #Hz
 f_medium = 0 #1Hz
 
-fig1 = figure(6,figsize=[9,5]) # Plot comparing against RC
+fig1 = figure(7,figsize=[9,5]) # Plot comparing against RC
 ax_RC_bw = fig1.add_subplot(131)
 ax_RC_cost = fig1.add_subplot(132)
 ax_RC_combined = fig1.add_subplot(133)
 
-fig2 = figure(5,figsize=[9,5])
+fig2 = figure(6,figsize=[9,5])
 ax_Z = fig2.add_subplot(1,2,1)
 ax_cost = fig2.add_subplot(2,2,4)
 ax_R_0 = fig2.add_subplot(2, 2, 2)
@@ -47,21 +46,13 @@ for i,V in enumerate(Vr): #Impedances at lowest frequency
         DepolarisePhotoreceptor.WithLight(HH,V)
     else:
         DepolarisePhotoreceptor.WithCurrent(HH,V)
-    Experiment.freeze_conductances(HH)
-    Experiment.unfreeze_conductances(HH)
     total_resistance_array[i] = HH.body.resistance()
     total_K_conductance[i] = HH.body.total_K_conductance()
 
 ax_R_0.plot(Vr, total_resistance_array / 1000, 'k--', linewidth=2, label ="Non-fixed conductances")
 
 
-#ax_Z_V_low.set_xlabel("Voltage (mV)")
-ax_R_0.set_ylabel("Impedance (MOhms)")
-#ax_Z_V_low.set_yscale('log')
-#ax_Z_V_low.set_ylim([30, 500])
-ax_R_0.set_xticklabels([])
-ax_R_0.yaxis.set_label_position("right")
-ax_R_0.yaxis.tick_right()
+
 ### ONLY CERTAIN VOLTAGES BUT CONTINUOUS ACROSS FREQUENCIES
 
 Vr=array([-60,-52,-44,-37])
@@ -107,11 +98,20 @@ for i,V in enumerate(Vr):
     ax_RC_combined.plot(Bandwidth[i],Cost[i],colour_graph[i] + '.',markersize=15)
     ax_RC_combined.plot(Bandwidth[i], Cost_RC[i], colour_graph[i] + '.', markersize=15, markerfacecolor='None')
 
-#figure(5)
+#figure(6)
 ax_Z.set_xlabel("Frequency (Hz)")
 ax_Z.set_ylabel("Impedance (MOhms)")
 #ax_Z.set_ylim([10, 600])
 ax_Z.legend(loc=2,prop={'size':12})
+
+#ax_Z_V_low.set_xlabel("Voltage (mV)")
+ax_R_0.set_ylabel("Membrane resistance (MOhms)")
+#ax_Z_V_low.set_yscale('log')
+#ax_Z_V_low.set_ylim([30, 500])
+ax_R_0.set_xticklabels([])
+ax_R_0.yaxis.set_label_position("right")
+ax_R_0.yaxis.tick_right()
+
 ax_cost.set_xlabel("Membrane voltage (mV)")
 ax_cost.set_ylabel("Cost (ATP/s)")
 #ax_cost.set_ylim([5e7, 2e9])
@@ -132,7 +132,6 @@ for ii_RC in range(len(Vr)): #Four different RC membranes
     for i,V in enumerate(Vr): #Highest and lowest
         DepolarisePhotoreceptor.WithLight(HH_RC[ii_RC],V)
         Cost_RC_a[i,ii_RC] = HH_RC[ii_RC].energy_consumption()
-        #Bandwidth_RC_a[i,ii_RC] = calculate_bandwidth_of_passive_photoreceptor(HH_RC[ii_RC],low_limit_frequency=f_medium)
         pippo, Bandwidth_RC_a[i,ii_RC] = Gain_Bandwidth(HH_RC[ii_RC].body.impedance, f_min=f_medium)
 
 for ii_RC in range(len(Vr)): #Four different RC membranes
