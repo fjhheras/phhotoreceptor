@@ -24,7 +24,7 @@ option_debugging = False
 ####### BODY STARTS HERE
 
 f_medium = 2 #Hz
-option = 2
+option = 1
 change_LIC_to_keep_depolarisation = False
 photoreceptor = FlyFactory.DrosophilaR16(shift="none")
 
@@ -146,6 +146,7 @@ ax_bw_cost.plot(Bandwidth,Cost,'k--',zorder=0)
 ax_bw_cost.plot(Bandwidth_shift, Cost_shift,'k',zorder=0)
 ax_gain_cost.set_xlabel("Gain (mV)")
 ax_gain_cost.set_ylabel("Cost (ATP/s)")
+ax_gain_cost.set_ylim(ax_bw_cost.get_ylim())
 #ax_gain_cost.set_yscale('log')
 ax_gain_cost.plot(gain_max[1:],Cost[1:],'k--',zorder=0)
 ax_gain_cost.plot(gain_max_shift[1:], Cost_shift[1:],'k',zorder=0)
