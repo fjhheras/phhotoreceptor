@@ -6,6 +6,8 @@ import FlyFactory
 from phhotoreceptor.DepolarisePhotoreceptor import DepolarisePhotoreceptor
 from GBWPutils import GBWP, Gain_Bandwidth
 
+__author__ = 'Francisco J. H. Heras'
+
 option_debugging = False
 depolarise_with_light = True #If depolarise with current, all cost calculations are not biological
 

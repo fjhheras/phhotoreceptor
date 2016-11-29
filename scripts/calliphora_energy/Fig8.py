@@ -6,6 +6,8 @@ import FlyFactory
 from phhotoreceptor.DepolarisePhotoreceptor import DepolarisePhotoreceptor
 from GBWPutils import GBWP, Gain_Bandwidth
 
+__author__ = 'Francisco J. H. Heras'
+
 def classic_cost_estimation(R,V,E_K,E_L):
     '''Estimates cost as in e.g. Niven, Anderson and Laughlin (2007), using an estimate
     of the membrane resistance R, the membrane voltage V and the reversal potentials

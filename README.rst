@@ -4,9 +4,12 @@ pHHotoreceptor
 
 pHHotoreceptor is a Hodgkin-Huxley simulator of insect photoreceptor bodies.
 
-Scripts to generate the graphs in the article "Shunt peaking in neural membranes" 
-are located in the folder script/shunt_peaking.
+Scripts to generate the graphs in the article "Shunt peaking in neural membranes"
+(DOI: 10.1098/rsif.2016.0719) are located in the folder scripts/shunt_peaking.
 
+Scripts to generate the graphs in the article "Voltage-dependent K+ Channels 
+Improve the Energy Efficiency of Signalling in Blowfly Photoreceptors" (Submitted)
+are located in the folder scripts/calliphora_energy.
 
 ##########
 Licence

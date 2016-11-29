@@ -9,6 +9,8 @@ from phhotoreceptor.DepolarisePhotoreceptor import DepolarisePhotoreceptor
 import phhotoreceptor.Experiment as Experiment
 from GBWPutils import GBWP, Gain_Bandwidth
 
+__author__ = 'Francisco J. H. Heras'
+
 option_debugging = False
 HH  = FlyFactory.CalliphoraR16(channel_choice = "Anderson") #
 
