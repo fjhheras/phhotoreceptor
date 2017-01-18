@@ -8,14 +8,14 @@ Scripts to generate the graphs in the article "Shunt peaking in neural membranes
 (DOI: 10.1098/rsif.2016.0719) are located in the folder scripts/shunt_peaking.
 
 Scripts to generate the graphs in the article "Voltage-dependent K+ Channels 
-Improve the Energy Efficiency of Signalling in Blowfly Photoreceptors" (Submitted)
+Improve the Energy Efficiency of Signalling in Blowfly Photoreceptors" (In print)
 are located in the folder scripts/calliphora_energy.
 
 ##########
 Licence
 ##########
 
-Copyright (C) 2016  Francisco J. H. Heras (fjhheras@gmail.com)
+Copyright (C) 2016-2017  Francisco J. H. Heras (fjhheras@gmail.com)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
