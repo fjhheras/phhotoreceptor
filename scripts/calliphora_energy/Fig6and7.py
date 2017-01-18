@@ -78,7 +78,19 @@ for i,V in enumerate(Vr):
     HH_RC.append(FlyFactory.PassiveCalliphoraR16WithBandwidth(Bandwidth[i],V,low_limit_frequency=f_medium))
     DepolarisePhotoreceptor.WithLight(HH_RC[i],V)
     Cost_RC[i] = HH_RC[i].energy_consumption()
-    Z_RC = HH_RC[i].body.impedance(f)#*HH.body.impedance(f_medium)/HH_RC[i].body.impedance(f_medium) #All frequencies
+    Z_RC = HH_RC[i].body.impedance(f)#All frequencies
+
+    total_K_conductance =HH.body.total_voltage_dependent_conductance()+HH.body.leak_conductances['K'].g()
+    total_depol_conductance = HH.body.leak_conductances['L'].g()+HH.body.light_conductance.g()
+    print("At voltage {} mV, the active ph membrane has total K conductance {:04.2E} mS and total depolarising conductance {:04.2E} mS".format(V,
+        total_K_conductance,total_depol_conductance))
+
+    total_K_conductance_RC = HH_RC[i].body.total_voltage_dependent_conductance()+HH_RC[i].body.leak_conductances['K'].g()
+    total_depol_conductance_RC = HH_RC[i].body.leak_conductances['L'].g()+HH_RC[i].body.light_conductance.g()
+    print("The matched passive ph membrane has total K conductance {:04.2E} mS and total depolarising conductance {:04.2E} mS".format(
+        total_K_conductance_RC,total_depol_conductance_RC))
+
+
 
 
     label_str = str(V) + ' mV'
