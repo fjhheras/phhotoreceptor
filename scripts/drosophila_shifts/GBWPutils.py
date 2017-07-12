@@ -26,7 +26,7 @@ def Gain_Bandwidth_2(Z, f_cut_off_max = 5000, f_min = 0):
     return abs(Z(f_max)),f_cut_off
 def GBWP2(Z, f_min = 0):
     gain,bw = Gain_Bandwidth_2(Z, f_min = f_min)
-    return gain*bw
+    return gain*bw/1e3 #kOhm*Hz -> MOhm*Hz
 
 ### Choosing between them
 which_gbwp = 1
