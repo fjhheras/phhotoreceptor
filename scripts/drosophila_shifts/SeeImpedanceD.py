@@ -77,7 +77,7 @@ ax_Z_V_medium.set_ylim([30, 500])
 ### ONLY CERTAIN VOLTAGES BUT CONTINUOUS ACROSS FREQUENCIES
 
 
-Vr=range(-68,-30,8)
+Vr=arange(-68.0,-30.0,8)
 delta_f = 0.1
 f = arange(.2,200,delta_f)
 f_from_medium = arange(f_medium,200,.01)

@@ -28,7 +28,7 @@ ax_bwprod = fig1.add_subplot(122)
 
 ### ONLY CERTAIN VOLTAGES BUT CONTINUOUS ACROSS FREQUENCIES
 
-Vr=range(-68,-30,8)
+Vr = arange(-68,-30,8)
 V_rest = HH.V_rest()
 delta_f = 0.1
 f = arange(.2,200,delta_f)

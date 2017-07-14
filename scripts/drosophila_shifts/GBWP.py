@@ -18,7 +18,7 @@ ax_GBWP=[]
 for ii in range(3):
     ax_GBWP.append(fig1.add_subplot(3,1,ii+1))
 
-Vr=range(-68,-30,8)
+Vr=arange(-68.0,-30.0,8)
 deltaV = 0.5
 Vr_continuous = arange(-68,-36 + deltaV, deltaV)
 

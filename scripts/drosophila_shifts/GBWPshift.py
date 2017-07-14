@@ -20,7 +20,7 @@ ax_GBWP=[]
 for ii in range(3):
     ax_GBWP.append(fig1.add_subplot(3,1,ii+1))
 
-Vr=range(-68,-30,8)
+Vr=arange(-68.0,-30.0,8)
 deltaV = 0.5
 Vr_continuous = arange(-68,-36 + deltaV, deltaV)
 
@@ -38,7 +38,7 @@ for i,V in enumerate(Vr_continuous):
         DepolarisePhotoreceptor.WithLight(HH,V)
     else:
         DepolarisePhotoreceptor.WithCurrent(HH,V)
-
+     
     GBWP_continuous_[i] = GBWP(HH.body.impedance, f_min = f_medium) #  GBWP(Z_,f_from_medium)/1e3
     Experiment.freeze_conductances(HH)
     GBWP_RC_continuous_[i] = GBWP(HH.body.impedance, f_min = f_medium) #GBWP(Z_fixed_,f_from_medium)/1e3
