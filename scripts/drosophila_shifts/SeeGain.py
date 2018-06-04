@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
 from copy import deepcopy
-from pylab import *
+import matplotlib.pyplot as plt
+#from pylab import *
 from numpy import *
 import FlyFactory
 from phhotoreceptor.DepolarisePhotoreceptor import DepolarisePhotoreceptor
@@ -21,7 +22,7 @@ f_low = 0 #Hz
 f_medium = 2 #Hz
 f_reference_gain = -1 #Hz If negative, max gain is taken
 
-fig1 = figure(6,figsize=[9,5])
+fig1 = plt.figure(6,figsize=[9,5])
 ax_RC_gain = fig1.add_subplot(121)
 ax_bwprod = fig1.add_subplot(122)
 
@@ -77,4 +78,4 @@ ax_bwprod.set_ylabel("CGBWP (mV Hz)")
 ax_bwprod.plot(Vr,gain_bandwidth_product,'k')
 ax_bwprod.plot(Vr,gain_bandwidth_product_fixed,'k--')
 
-show()
+plt.show()

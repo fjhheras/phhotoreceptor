@@ -10,7 +10,8 @@
 ## Option 3:
 ## Decreases Shab conductance by 50%
 
-from pylab import *
+import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
 from numpy import *
 import copy
 import FlyFactory
@@ -27,6 +28,7 @@ f_medium = 2 #Hz
 option = 1
 change_LIC_to_keep_depolarisation = False
 photoreceptor = FlyFactory.DrosophilaR16(shift="none")
+delta_cost = 1e-8 #If change, change also labels
 
 ### ONLY CERTAIN VOLTAGES BUT CONTINUOUS ACROSS FREQUENCIES
 
@@ -36,20 +38,20 @@ delta_f = 0.2
 f = arange(.5,200,delta_f)
 f_from_medium = arange(f_medium,200,1)
 
-fig1 = figure(1)
+fig1 = plt.figure(1)
 ax_Z = fig1.add_subplot(1,2,1)
 ax_bw = fig1.add_subplot(2,2,2)
 ax_cost = fig1.add_subplot(2,2,4)
 
-fig2 = figure(2)
+fig2 = plt.figure(2)
 ax_bw_cost = fig2.add_subplot(1,2,1)
 ax_gain_cost = fig2.add_subplot(1,2,2)
 
-fig3 = figure(3)
+fig3 = plt.figure(3)
 ax_gain = fig3.add_subplot(1,2,1)
 ax_gain_vs_bw = fig3.add_subplot(1,2,2)
 
-fig6 = figure(6,figsize=[9,5])
+fig6 = plt.figure(6,figsize=[9,5])
 ax_bwprod = fig6.add_subplot(121)
 
 colour_graph=['y','b','g','r','c']
@@ -63,6 +65,7 @@ gain_f= zeros_like(Vr)
 gain_f_shift= zeros_like(Vr)
 Vr_new = zeros_like(Vr)
 
+
 for i,V in enumerate(Vr):
     label_str = str(V) + ' mV'
     DepolarisePhotoreceptor.WithLight(photoreceptor,V=V)
@@ -70,7 +73,7 @@ for i,V in enumerate(Vr):
 
     ax_Z.loglog(f,abs(Z)/1000,colour_graph[i]+'--',linewidth=2,label = label_str)
     pippo,Bandwidth[i] = Gain_Bandwidth(photoreceptor.body.impedance,f_min = f_medium)
-    Cost[i] = photoreceptor.energy_consumption()
+    Cost[i] = photoreceptor.energy_consumption()*delta_cost
 
     ax_bw.plot(V,Bandwidth[i],colour_graph[i] + '.',markersize=15, alpha=0.5)
     ax_cost.plot(V,Cost[i],colour_graph[i] + '.',markersize=15, alpha=0.5)
@@ -102,7 +105,7 @@ for i,V in enumerate(Vr):
 
     ax_Z.loglog(f,abs(Z)/1000,colour_graph[i],linewidth=2)
     pippo,Bandwidth_shift[i] = Gain_Bandwidth(photoreceptor_shifted.body.impedance,f_min = f_medium)
-    Cost_shift[i] = photoreceptor_shifted.energy_consumption()
+    Cost_shift[i] = photoreceptor_shifted.energy_consumption()*delta_cost
     ax_bw.plot(Vr_new[i],Bandwidth_shift[i],colour_graph[i] + '.',markersize=15)
     ax_cost.plot(Vr_new[i],Cost_shift[i],colour_graph[i] + '.',markersize=15)
     ax_bw_cost.plot(Bandwidth_shift[i], Cost_shift[i],colour_graph[i] + '.',markersize=15)
@@ -128,7 +131,7 @@ ax_bw.yaxis.set_label_position("right")
 ax_bw.yaxis.tick_right()
 ax_bw.yaxis.set_ticks_position('both')
 ax_cost.set_xlabel("Membrane voltage (mV)")
-ax_cost.set_ylabel("Cost (ATP/s)")
+ax_cost.set_ylabel(r"Energy Consumption ($10^8$ ATP/s)")
 #ax_cost.set_ylim([5e7, 1e9])
 ax_cost.set_xlim([-72, -30])
 ax_cost.plot(Vr,Cost,'k--',zorder=0)
@@ -140,7 +143,7 @@ ax_cost.yaxis.set_ticks_position('both')
 
 #figure(2)
 ax_bw_cost.set_xlabel("Bandwidth (Hz)")
-ax_bw_cost.set_ylabel("Cost (ATP/s)")
+ax_bw_cost.set_ylabel("Energy Consumption ($10^8$ ATP/s)")
 #ax_bw_cost.set_yscale('log')
 ax_bw_cost.plot(Bandwidth,Cost,'k--',zorder=0)
 ax_bw_cost.plot(Bandwidth_shift, Cost_shift,'k',zorder=0)
@@ -181,4 +184,7 @@ elif option == 2:
 else:
     print("Continuous line is Shab current decreased 50%")
     fig1.suptitle("Effect of 50% decrease in Shab conductance by changes in calmodulin")
-show()
+
+
+
+plt.show()

@@ -1,11 +1,12 @@
 #!/usr/bin/python3
-from pylab import *
-from numpy import *
+#from pylab import *
+import numpy as np
+import matplotlib.pyplot as plt
 import copy
 import FlyFactory
 from phhotoreceptor.DepolarisePhotoreceptor import DepolarisePhotoreceptor
 import phhotoreceptor.Experiment as Experiment
-from GBWPutils import Gain_Bandwidth, GBWP 
+from GBWPutils import GBWP
 import ShiftConductances
 
 option_debugging = False
@@ -15,22 +16,24 @@ change_LIC_to_keep_depolarisation = True
 HH  = FlyFactory.DrosophilaR16()
 f_medium = 2 #Hz
 
-fig1 = figure(1)
-ax_GBWP=[]
-for ii in range(3):
-    ax_GBWP.append(fig1.add_subplot(3,1,ii+1))
+fig1, ax_GBWP = plt.subplots(3,1)
+plt.subplots_adjust(hspace=0.45)
 
-Vr=arange(-68.0,-30.0,8)
+for i in range(3):
+    ax_GBWP[i].tick_params(direction='in')
+    ax_GBWP[i].set_ylim([3,4.5])
+
+Vr = np.arange(-68.0, -30.0, 8)
 deltaV = 0.5
-Vr_continuous = arange(-68,-36 + deltaV, deltaV)
+Vr_continuous = np.arange(-68, -36 + deltaV, deltaV)
 
 colour_graph=['y','b','g','r','c']
 
 ##Continuous across depolarisations
 
-GBWP_continuous_ = zeros_like(Vr_continuous)
-GBWP_RC_continuous_ = zeros_like(Vr_continuous)
-GBWP_shift_continuous_ = zeros((3,len(Vr_continuous)))
+GBWP_continuous_ = np.zeros_like(Vr_continuous)
+GBWP_RC_continuous_ = np.zeros_like(Vr_continuous)
+GBWP_shift_continuous_ = np.zeros((3,len(Vr_continuous)))
 
 for i,V in enumerate(Vr_continuous):
 
@@ -38,7 +41,7 @@ for i,V in enumerate(Vr_continuous):
         DepolarisePhotoreceptor.WithLight(HH,V)
     else:
         DepolarisePhotoreceptor.WithCurrent(HH,V)
-     
+
     GBWP_continuous_[i] = GBWP(HH.body.impedance, f_min = f_medium) #  GBWP(Z_,f_from_medium)/1e3
     Experiment.freeze_conductances(HH)
     GBWP_RC_continuous_[i] = GBWP(HH.body.impedance, f_min = f_medium) #GBWP(Z_fixed_,f_from_medium)/1e3
@@ -48,10 +51,12 @@ for i,V in enumerate(Vr_continuous):
         HH_shifted = copy.deepcopy(HH)
         if ii==0:
             ShiftConductances.WithLight(HH_shifted, change_LIC_to_keep_depolarisation = change_LIC_to_keep_depolarisation)
-        elif ii==1:
+        elif ii==2:
             ShiftConductances.WithSerotonin(HH_shifted, change_LIC_to_keep_depolarisation = change_LIC_to_keep_depolarisation)
-        else:
+        elif ii==1:
             Experiment.modify_conductance(HH_shifted, "Shab", .5, change_LIC_to_keep_depolarisation = change_LIC_to_keep_depolarisation)
+        else:
+            raise Exception
         GBWP_shift_continuous_[ii,i] = GBWP(HH_shifted.body.impedance, f_min = f_medium) #Z_,f_from_medium)/1e3
 
 for ii in range(3):
@@ -61,9 +66,9 @@ for ii in range(3):
 
 
 
-GBWP_ = zeros_like(Vr)
-GBWP_RC_ = zeros_like(Vr)
-GBWP_shift_ = zeros((3,len(Vr)))
+GBWP_ = np.zeros_like(Vr)
+GBWP_RC_ = np.zeros_like(Vr)
+GBWP_shift_ = np.zeros((3,len(Vr)))
 
 for i,V in enumerate(Vr):
 
@@ -81,10 +86,13 @@ for i,V in enumerate(Vr):
         HH_shifted = copy.deepcopy(HH)
         if ii==0:
             ShiftConductances.WithLight(HH_shifted, change_LIC_to_keep_depolarisation = change_LIC_to_keep_depolarisation)
-        elif ii==1:
+        elif ii==2:
             ShiftConductances.WithSerotonin(HH_shifted, change_LIC_to_keep_depolarisation = change_LIC_to_keep_depolarisation)
-        else:
+        elif ii==1:
             Experiment.modify_conductance(HH_shifted, "Shab", .5, change_LIC_to_keep_depolarisation = change_LIC_to_keep_depolarisation)
+        else:
+            raise Exception
+
         GBWP_shift_[ii,i] = GBWP(HH_shifted.body.impedance, f_min = f_medium) #Z_,f_from_medium)/1e3
 
     for ii in range(3):
@@ -96,4 +104,4 @@ for ii in range(3):
     ax_GBWP[ii].set_ylabel('GBWP (GOhm Hz)')
 ax_GBWP[2].set_xlabel('Membrane voltage (mV)')
 
-show()
+plt.show()
