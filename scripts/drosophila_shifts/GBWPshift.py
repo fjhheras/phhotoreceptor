@@ -16,11 +16,11 @@ change_LIC_to_keep_depolarisation = True
 HH  = FlyFactory.DrosophilaR16()
 f_medium = 2 #Hz
 
-fig1, ax_GBWP = plt.subplots(3,1)
-plt.subplots_adjust(hspace=0.45)
+fig1, ax_GBWP = plt.subplots(3, 1, figsize=(6,8))
+plt.subplots_adjust(hspace=0.45, left=0.1, right=0.95, bottom=0.05, top=0.95)
 
 for i in range(3):
-    ax_GBWP[i].tick_params(direction='in')
+    ax_GBWP[i].tick_params(direction='in', top=True, right=True)
     ax_GBWP[i].set_ylim([3,4.5])
 
 Vr = np.arange(-68.0, -30.0, 8)
@@ -101,7 +101,7 @@ for i,V in enumerate(Vr):
         ax_GBWP[ii].plot(V,GBWP_RC_[i]/1e3,colour_graph[i] + '.',markersize=15,alpha=0.5)
 
 for ii in range(3):
-    ax_GBWP[ii].set_ylabel('GBWP (GOhm Hz)')
+    ax_GBWP[ii].set_ylabel(r'GBWP (G$\Omega$ Hz)')
 ax_GBWP[2].set_xlabel('Membrane voltage (mV)')
 
 plt.show()
