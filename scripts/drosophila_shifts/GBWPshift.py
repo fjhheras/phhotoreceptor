@@ -2,12 +2,15 @@
 #from pylab import *
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import rc
 import copy
 import FlyFactory
 from phhotoreceptor.DepolarisePhotoreceptor import DepolarisePhotoreceptor
 import phhotoreceptor.Experiment as Experiment
 from GBWPutils import GBWP
 import ShiftConductances
+
+rc('font',**{'family':'serif'}) #,'serif':['Liberation Serif']})
 
 option_debugging = False
 depolarise_with_light = True #If depolarise with current, all cost calculations are not biological
@@ -17,11 +20,15 @@ HH  = FlyFactory.DrosophilaR16()
 f_medium = 2 #Hz
 
 fig1, ax_GBWP = plt.subplots(3, 1, figsize=(6,8))
+label = '(a) (b) (c)'.split()
 plt.subplots_adjust(hspace=0.45, left=0.1, right=0.95, bottom=0.05, top=0.95)
 
 for i in range(3):
     ax_GBWP[i].tick_params(direction='in', top=True, right=True)
     ax_GBWP[i].set_ylim([3,4.5])
+    ax_GBWP[i].text(-0.04, 1.2, label[i], transform=ax_GBWP[i].transAxes,
+                    fontsize=14, va='top', ha='right')
+
 
 Vr = np.arange(-68.0, -30.0, 8)
 deltaV = 0.5

@@ -60,9 +60,14 @@ gain_max = zeros((len(conditions) + 2, len(Vcont)))
 Vr_new = zeros((len(conditions) + 2, len(Vcont)))
 
 fig, axes = plt.subplots(1, 3, figsize=(9,4))
+labels = '(a) (b) (c)'.split()
 plt.subplots_adjust(wspace=0.4, left=0.1, right=0.95, bottom=0.1, top=0.95)
-for ax in axes:
+for ax, label in zip(axes, labels):
     ax.tick_params(direction='in', top=True, right=True)
+    ax.text(-0.12, 1.02, label, transform=ax.transAxes,
+                    fontsize=14, va='top', ha='right')
+
+
 
 ax_bw_gain, ax_cost_bw, ax_cost_gain = axes
 

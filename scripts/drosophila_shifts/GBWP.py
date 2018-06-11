@@ -1,11 +1,14 @@
 #!/usr/bin/python3
 
-from pylab import *
-from numpy import *
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import rc
 import FlyFactory
 from phhotoreceptor.DepolarisePhotoreceptor import DepolarisePhotoreceptor
 import phhotoreceptor.Experiment as Experiment
-from GBWPutils import Gain_Bandwidth, GBWP 
+from GBWPutils import GBWP
+
+rc('font',**{'family':'serif'}) #,'serif':['Liberation Serif']})
 
 option_debugging = False
 depolarise_with_light = True #If depolarise with current, all cost calculations are not biological
@@ -13,20 +16,30 @@ depolarise_with_light = True #If depolarise with current, all cost calculations 
 HH  = FlyFactory.DrosophilaR16()
 f_medium = 2 #Hz
 
-fig1 = figure(1)
-ax_GBWP=[]
-for ii in range(3):
-    ax_GBWP.append(fig1.add_subplot(3,1,ii+1))
+fig1, ax_GBWP = plt.subplots(3, 1, figsize=(6,8))
+label = '(a) (b) (c)'.split()
+plt.subplots_adjust(hspace=0.45, left=0.1, right=0.95, bottom=0.05, top=0.95)
+for i in range(3):
+    ax_GBWP[i].tick_params(direction='in', top=True, right=True)
+    ax_GBWP[i].set_ylim([2.75,4.25])
+    ax_GBWP[i].text(-0.04, 1.2, label[i], transform=ax_GBWP[i].transAxes,
+                    fontsize=14, va='top', ha='right')
 
-Vr=arange(-68.0,-30.0,8)
+
+#fig1 = plt.figure(1)
+#ax_GBWP=[]
+#for ii in range(3):
+#    ax_GBWP.append(fig1.add_subplot(3,1,ii+1))
+
+Vr=np.arange(-68.0,-30.0,8)
 deltaV = 0.5
-Vr_continuous = arange(-68,-36 + deltaV, deltaV)
+Vr_continuous = np.arange(-68,-36 + deltaV, deltaV)
 
 colour_graph=['y','b','g','r','c']
 
-GBWP_continuous_ = zeros_like(Vr_continuous)
-GBWP_RC_continuous_ = zeros_like(Vr_continuous)
-GBWP_selective_continuous_ = zeros((3,len(Vr_continuous)))
+GBWP_continuous_ = np.zeros_like(Vr_continuous)
+GBWP_RC_continuous_ = np.zeros_like(Vr_continuous)
+GBWP_selective_continuous_ = np.zeros((3,len(Vr_continuous)))
 
 for i,V in enumerate(Vr_continuous):
 
@@ -56,9 +69,9 @@ for ii in range(3):
 
 
 
-GBWP_ = zeros_like(Vr)
-GBWP_RC_ = zeros_like(Vr)
-GBWP_selective_ = zeros((3,len(Vr)))
+GBWP_ = np.zeros_like(Vr)
+GBWP_RC_ = np.zeros_like(Vr)
+GBWP_selective_ = np.zeros((3,len(Vr)))
 
 for i,V in enumerate(Vr):
 
@@ -89,4 +102,4 @@ for ii in range(3):
     ax_GBWP[ii].set_ylabel('GBWP (GOhm Hz)')
 ax_GBWP[2].set_xlabel('Membrane voltage (mV)')
 
-show()
+plt.show()

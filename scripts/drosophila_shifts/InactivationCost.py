@@ -18,10 +18,13 @@ delta_cost = 1e-8 #If change, change also labels
 calculate_bandwidth_without_inactivation = False
 
 fig1, axes = plt.subplots(1, 3, figsize=(8,3))
-#plt.subplots_adjust(hspace=0.01, left=0.1, right=0.95, bottom=0.15, top=0.95)
+label = '(a) (b) (c)'.split()
 plt.tight_layout()
 for i in range(3):
     axes[i].tick_params(direction='in', top=True, right=True)
+    axes[i].text(-0.11, 1.04, label[i], transform=axes[i].transAxes,
+                    fontsize=14, va='top', ha='right')
+
 
 ax_no_inactivation_bw, ax_no_inactivation_cost, ax_no_inactivation_combined = axes
 
