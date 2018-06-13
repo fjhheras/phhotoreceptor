@@ -166,9 +166,6 @@ ax_cost_gain.plot(gain_max[N, 1:], Cost[N, 1:], condition_line[N], zorder=0)
 ## Plotting other conditions
 
 for ii,condition in enumerate(conditions):
-    #ax_gain_vs_bw.plot(gain_max[ii, 1:], Bandwidth[ii, 1:], condition_line[ii], zorder=0)
-    #ax_cost_vs_gbwp.plot(Cost[ii, 1:], gain_max[ii, 1:] * Bandwidth[ii, 1:], condition_line[ii], zorder=0)
-    #ax_eff.plot(Cost[ii, 1:], gain_max[ii, 1:] * Bandwidth[ii, 1:] / Cost[ii, 1:], condition_line[ii], zorder=0)
     ax_bw_gain.plot(gain_max[ii, 1:], Bandwidth[ii, 1:], condition_line[ii], zorder=0)
     ax_cost_bw.plot(Bandwidth[ii, 1:], Cost[ii, 1:], condition_line[ii], zorder=0)
     ax_cost_gain.plot(gain_max[ii, 1:], Cost[ii, 1:], condition_line[ii], zorder=0)
@@ -180,13 +177,5 @@ ax_cost_gain.set_xlabel("Peak voltage contrast gain (mV)")
 ax_bw_gain.set_ylabel("Bandwidth (Hz)")
 ax_cost_bw.set_ylabel(r"Cost ($10^8$ ATP/s)")
 ax_cost_gain.set_ylabel("Cost ($10^8$ ATP/s)")
-
-#ax_gain_vs_bw.set_ylabel("Bandwidth (Hz)")
-#ax_gain_vs_bw.set_xlabel("Gain (mV)")
-#ax_cost_vs_gbwp.set_ylabel("cGBWP (mV Hz)")
-#ax_cost_vs_gbwp.set_xlabel("Cost (ATP/s)")
-
-#ax_eff.set_xlabel("Cost (ATP/s)")
-#ax_eff.set_ylabel("cGBWP efficiency (mV Hz / ATP s")
 
 show()

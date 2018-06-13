@@ -8,10 +8,7 @@ from phhotoreceptor.DepolarisePhotoreceptor import DepolarisePhotoreceptor
 import phhotoreceptor.Experiment as Experiment
 from GBWPutils import GBWP
 
-rc('font',**{'family':'serif'}) #,'serif':['Liberation Serif']})
-
-option_debugging = False
-depolarise_with_light = True #If depolarise with current, all cost calculations are not biological
+rc('font',**{'family':'serif'})
 
 HH  = FlyFactory.DrosophilaR16()
 f_medium = 2 #Hz
@@ -26,38 +23,28 @@ for i in range(3):
                     fontsize=14, va='top', ha='right')
 
 
-#fig1 = plt.figure(1)
-#ax_GBWP=[]
-#for ii in range(3):
-#    ax_GBWP.append(fig1.add_subplot(3,1,ii+1))
-
 Vr=np.arange(-68.0,-30.0,8)
 deltaV = 0.5
 Vr_continuous = np.arange(-68,-36 + deltaV, deltaV)
 
-colour_graph=['y','b','g','r','c']
+colour_graph=list('ybgrc')
 
 GBWP_continuous_ = np.zeros_like(Vr_continuous)
 GBWP_RC_continuous_ = np.zeros_like(Vr_continuous)
 GBWP_selective_continuous_ = np.zeros((3,len(Vr_continuous)))
 
 for i,V in enumerate(Vr_continuous):
-
-    if depolarise_with_light:
-        DepolarisePhotoreceptor.WithLight(HH,V)
-    else:
-        DepolarisePhotoreceptor.WithCurrent(HH,V)
-
-    GBWP_continuous_[i] = GBWP(HH.body.impedance, f_min = f_medium) #  GBWP(Z_,f_from_medium)/1e3
+    DepolarisePhotoreceptor.WithLight(HH,V)
+    GBWP_continuous_[i] = GBWP(HH.body.impedance, f_min = f_medium)
     Experiment.freeze_conductances(HH)
-    GBWP_RC_continuous_[i] = GBWP(HH.body.impedance, f_min = f_medium) #GBWP(Z_fixed_,f_from_medium)/1e3
+    GBWP_RC_continuous_[i] = GBWP(HH.body.impedance, f_min = f_medium)
     Experiment.unfreeze_conductances(HH)
 
     for ii in range(3):
         for iii in range(3):
             if ii!=iii:
                 Experiment.freeze_conductances(HH,index=iii)
-        GBWP_selective_continuous_[ii,i] = GBWP(HH.body.impedance, f_min = f_medium) #Z_,f_from_medium)/1e3
+        GBWP_selective_continuous_[ii,i] = GBWP(HH.body.impedance, f_min = f_medium)
         Experiment.unfreeze_conductances(HH)
 
 for ii in range(3):
@@ -67,29 +54,22 @@ for ii in range(3):
 
 
 
-
-
 GBWP_ = np.zeros_like(Vr)
 GBWP_RC_ = np.zeros_like(Vr)
 GBWP_selective_ = np.zeros((3,len(Vr)))
 
 for i,V in enumerate(Vr):
-
-    if depolarise_with_light:
-        DepolarisePhotoreceptor.WithLight(HH,V)
-    else:
-        DepolarisePhotoreceptor.WithCurrent(HH,V)
-
-    GBWP_[i] = GBWP(HH.body.impedance, f_min = f_medium) #Z_,f_from_medium)/1e3
+    DepolarisePhotoreceptor.WithLight(HH,V)
+    GBWP_[i] = GBWP(HH.body.impedance, f_min = f_medium)
     Experiment.freeze_conductances(HH)
-    GBWP_RC_[i] = GBWP(HH.body.impedance, f_min = f_medium) #Z_fixed_,f_from_medium)/1e3
+    GBWP_RC_[i] = GBWP(HH.body.impedance, f_min = f_medium)
     Experiment.unfreeze_conductances(HH)
 
     for ii in range(3):
         for iii in range(3):
             if ii!=iii:
                 Experiment.freeze_conductances(HH,index=iii)
-        GBWP_selective_[ii,i] = GBWP(HH.body.impedance, f_min = f_medium) #Z_,f_from_medium)/1e3
+        GBWP_selective_[ii,i] = GBWP(HH.body.impedance, f_min = f_medium)
         Experiment.unfreeze_conductances(HH)
 
     for ii in range(3):
@@ -99,7 +79,7 @@ for i,V in enumerate(Vr):
 
 
 for ii in range(3):
-    ax_GBWP[ii].set_ylabel('GBWP (GOhm Hz)')
+    ax_GBWP[ii].set_ylabel(r'GBWP (G$\Omega$ Hz)')
 ax_GBWP[2].set_xlabel('Membrane voltage (mV)')
 
 plt.show()

@@ -1,11 +1,14 @@
 #!/usr/bin/python3
 
-## Plots a) Bandwidth vs (maximum) gain, b) GBWP vs cost
+## Plots two figures
+## First:
+## a) Bandwidth vs (maximum) gain, b) GBWP vs cost
 ## For a Drosophila photoreceptor with unshifted conductances
 ## and for three different shifts
+## Second: Energy efficiency
 
-from pylab import *
-from numpy import *
+import numpy as np
+import matplotlib.pyplot as plt
 import FlyFactory
 from phhotoreceptor.DepolarisePhotoreceptor import DepolarisePhotoreceptor
 import phhotoreceptor.Experiment as Experiment
@@ -13,48 +16,47 @@ import ShiftConductances
 
 option_debugging = False
 
-phasearray = vectorize (lambda z : angle(z))
-def Calculate_Bandwidth(Z,f):
+def Calculate_Bandwidth(Z, f):
     Z_max = abs(Z[0])
-    for i,ff in enumerate(f):
+    for i, ff in enumerate(f):
         if abs(Z[i]) > Z_max:
             Z_max = abs(Z[i])
-        if Z_max/sqrt(2) > abs(Z[i]):
+        if Z_max/np.sqrt(2) > abs(Z[i]):
             return ff
 
 ####### BODY STARTS HERE
 
-f_medium = 2 #Hz
+f_medium = 2 # Hz
 change_LIC_to_keep_depolarisation = False
 
 ### ONLY CERTAIN VOLTAGES BUT CONTINUOUS ACROSS FREQUENCIES
 
-Vcont=arange(-62.0,-35.0,0.2)
-Vr=arange(-68.0,-30.0,8.0)
+Vcont = np.arange(-62.0, -35.0, 0.2)
+Vr = np.arange(-68.0, -30.0, 8.0)
 delta_f = 0.1
-epsilon =1e-6
-f_from_medium = arange(f_medium,500,delta_f)
+epsilon = 1e-6
+f_from_medium = np.arange(f_medium, 500, delta_f)
 
-colour_graph=['y','b','g','r','c']
-conditions=['Shab-50','Shab+50','Serotonin','PIP2']
-condition_line=['g','y','b','r','k--']
-N=len(conditions)
+colour_graph = list('ybgrc')
+conditions = 'Shab-50 Shab+50 Serotonin PIP2'.split()
+condition_line = 'g y b r k--'.split()
+N = len(conditions)
 
-Bandwidth_r = zeros((len(conditions) + 2, len(Vr)))
-Cost_r = zeros((len(conditions) + 2, len(Vr)))
-gain_max_r = zeros((len(conditions) + 2, len(Vr)))
-Vr_new_r = zeros((len(conditions) + 2, len(Vr)))
+Bandwidth_r = np.zeros((len(conditions) + 2, len(Vr)))
+Cost_r = np.zeros((len(conditions) + 2, len(Vr)))
+gain_max_r = np.zeros((len(conditions) + 2, len(Vr)))
+Vr_new_r = np.zeros((len(conditions) + 2, len(Vr)))
 
-Bandwidth = zeros((len(conditions) + 2, len(Vcont)))
-Cost = zeros((len(conditions) + 2, len(Vcont)))
-gain_max = zeros((len(conditions) + 2, len(Vcont)))
-Vr_new = zeros((len(conditions) + 2, len(Vcont)))
+Bandwidth = np.zeros((len(conditions) + 2, len(Vcont)))
+Cost = np.zeros((len(conditions) + 2, len(Vcont)))
+gain_max = np.zeros((len(conditions) + 2, len(Vcont)))
+Vr_new = np.zeros((len(conditions) + 2, len(Vcont)))
 
-fig1 = figure(1)
+fig1 = plt.figure(1)
 ax_gain_vs_bw = fig1.add_subplot(2,1,1)
 ax_cost_vs_gbwp = fig1.add_subplot(2,1,2)
 
-fig2 = figure(2)
+fig2 = plt.figure(2)
 ax_eff = fig2.add_subplot(1,1,1)
 
 ## Only the values in Vr to plot fat circles
@@ -76,13 +78,13 @@ for i,V in enumerate(Vr):
     for ii,condition in enumerate(conditions):
         photoreceptor = FlyFactory.DrosophilaR16(shift="none")
         DepolarisePhotoreceptor.WithLight(photoreceptor,V=V)
-        if condition=='PIP2':
+        if condition == 'PIP2':
             ShiftConductances.WithLight(photoreceptor, change_LIC_to_keep_depolarisation = change_LIC_to_keep_depolarisation)
-        elif condition=='Serotonin':
+        elif condition == 'Serotonin':
             ShiftConductances.WithSerotonin(photoreceptor, change_LIC_to_keep_depolarisation = change_LIC_to_keep_depolarisation)
-        elif condition=='Shab-50':
+        elif condition == 'Shab-50':
             Experiment.modify_conductance(photoreceptor, "Shab", .5, change_LIC_to_keep_depolarisation = change_LIC_to_keep_depolarisation)
-        elif condition=='Shab+50':
+        elif condition == 'Shab+50':
             Experiment.modify_conductance(photoreceptor, "Shab", 1.5, change_LIC_to_keep_depolarisation = change_LIC_to_keep_depolarisation)
         else:
             print("Warning, option not recognised")
@@ -151,6 +153,6 @@ ax_cost_vs_gbwp.set_ylabel("cGBWP (mV Hz)")
 ax_cost_vs_gbwp.set_xlabel("Cost (ATP/s)")
 
 ax_eff.set_xlabel("Cost (ATP/s)")
-ax_eff.set_ylabel("cGBWP efficiency (mV Hz / ATP s")
+ax_eff.set_ylabel("cGBWP efficiency (mV / ATP)")
 
-show()
+plt.show()
